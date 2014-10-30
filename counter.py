@@ -1,8 +1,9 @@
 """Read in oscilloscope signals through the sound card and select meaningful events"""
-from __future__ import print_function,division
+from __future__ import print_function,division,with_statement
 
 import numpy as np
 import pyaudio
+import wave
 
 #Check if matplotlib is installed
 try:
@@ -130,3 +131,27 @@ class Recorder(object):
 		self.stream.stop_stream()
 		self.stream.close()
 		self.p.terminate()
+
+
+	def save(self,filename):
+
+		"""
+		Save current recording to wave file
+
+		"""
+
+		print("[+] Saving waveform to {0}".format(filename))
+
+		p = pyaudio.PyAudio()
+
+		wf = wave.open(filename,"wb")
+		wf.setnchannels(self.channels)
+		wf.setsampwidth(p.get_sample_size(pyaudio.paFloat32))
+		wf.setframerate(self.rate)
+		wf.writeframes(self.signal.tostring())
+		wf.close()
+
+		p.terminate()
+
+
+
