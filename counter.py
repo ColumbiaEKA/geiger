@@ -24,17 +24,19 @@ class Recorder(object):
 
 	"""
 
-	def __init__(self,channels=1,rate=44100,frames_per_buffer=1024):
+	def __init__(self,channels=1,rate=44100,frames_per_buffer=1024,input_device_index=None,output_device_index=None):
 
 		self.channels = channels
 		self.rate = rate
 		self.frames_per_buffer = frames_per_buffer
+		self.input_device_index = input_device_index
+		self.output_device_index = output_device_index
 
 	def start(self):
 
 		#Open the sound card and instantiate the stream object
 		self.p = pyaudio.PyAudio()
-		self.stream = self.p.open(format=pyaudio.paFloat32,channels=self.channels,rate=self.rate,input=True,frames_per_buffer=self.frames_per_buffer)
+		self.stream = self.p.open(format=pyaudio.paFloat32,channels=self.channels,rate=self.rate,input=True,frames_per_buffer=self.frames_per_buffer,input_device_index=self.input_device_index)
 
 		#Log beginning of recordings to user
 		print("[+] Started recording, channels={0}, rate={1}, frames per buffer={2}".format(self.channels,self.rate,self.frames_per_buffer))
@@ -75,7 +77,7 @@ class Recorder(object):
 		print("[+] Play")
 		
 		self.p = pyaudio.PyAudio()
-		self.stream = self.p.open(format=pyaudio.paFloat32,channels=self.channels,rate=self.rate,output=True)
+		self.stream = self.p.open(format=pyaudio.paFloat32,channels=self.channels,rate=self.rate,output=True,output_device_index=self.output_device_index)
 
 		if y is not None:
 			to_play = y
