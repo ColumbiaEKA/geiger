@@ -39,7 +39,7 @@ class Recorder(object):
 		print("[+] Started recording, channels={0}, rate={1}, frames per buffer={2}".format(self.channels,self.rate,self.frames_per_buffer))
 
 
-	def record(self,seconds=5):
+	def record(self,seconds=5,visualize=False):
 
 		#Start recording
 		self.start()
@@ -56,6 +56,10 @@ class Recorder(object):
 
 		#Stop recording
 		self.stop()
+
+		#Maybe visualize the waveform
+		if visualize:
+			self.visualize()
 
 		#Return time series to the user
 		return self.time,self.signal
@@ -97,16 +101,26 @@ class Recorder(object):
 			raise ImportError("matplotlib is not installed, can't plot")
 
 		#Instantiate figure
-		if fig is None or ax is None:
-			self.fig,self.ax = plt.subplots()
+		if hasattr(self,"fig") and hasattr(self,"ax"):
+			pass
 		else:
-			self.fig = fig
-			self.ax = ax
+			
+			if fig is None or ax is None:
+				self.fig,self.ax = plt.subplots()
+			else:
+				self.fig = fig
+				self.ax = ax
 
 		#Plot the waveform
-		self.ax.plot(self.time,self.signal)
-		self.ax.set_xlabel(r"$t(\mathrm{s})$")
-		self.ax.set_ylabel(r"$y(\mathrm{u.a.})$")
+		if hasattr(self,"waveform"):
+			self.waveform[0].set_xdata(self.time)
+			self.waveform[0].set_ydata(self.signal)
+			self.ax.set_xlim(self.time.min(),self.time.max())
+			self.ax.set_ylim(self.signal.min(),self.signal.max())
+		else:
+			self.waveform = self.ax.plot(self.time,self.signal)
+			self.ax.set_xlabel(r"$t(\mathrm{s})$")
+			self.ax.set_ylabel(r"$y(\mathrm{u.a.})$")
 
 
 	def stop(self):
