@@ -167,18 +167,26 @@ class Recorder(object):
 
 		"""
 
+		#Parse the desired format from the filename
+		extension = filename.split(".")[-1]
+
 		print("[+] Saving waveform to {0}".format(filename))
 
-		p = pyaudio.PyAudio()
+		if extension=="npy":
+		
+			np.save(filename,np.array([self.time,self.signal]))
 
-		wf = wave.open(filename,"wb")
-		wf.setnchannels(self.channels)
-		wf.setsampwidth(p.get_sample_size(pyaudio.paFloat32))
-		wf.setframerate(self.rate)
-		wf.writeframes(self.signal.tostring())
-		wf.close()
+		else:
+			p = pyaudio.PyAudio()
 
-		p.terminate()
+			wf = wave.open(filename,"wb")
+			wf.setnchannels(self.channels)
+			wf.setsampwidth(p.get_sample_size(pyaudio.paFloat32))
+			wf.setframerate(self.rate)
+			wf.writeframes(self.signal.tostring())
+			wf.close()
+
+			p.terminate()
 
 
 	def savefig(self,filename):

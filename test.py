@@ -19,8 +19,10 @@ recorder = Recorder(input_device_index=input_device_index)
 recorder.record(5)
 recorder.play()
 
+recorder.save("waveform.npy")
+
 try:
 	recorder.savefig("waveform.png")
-	print("[+] Saving waveform to waveform.png")
+	print("[+] Saving waveform image to waveform.png")
 except:
 	pass
