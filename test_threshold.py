@@ -36,4 +36,4 @@ recorder.savefig("above_threshold.png")
 
 #Save the relevant events on txt file
 print("[+] Saving counts to counts.txt")
-np.savetxt("counts.txt",np.array([t,y]).transpose())
+np.savetxt("counts.txt",t)
