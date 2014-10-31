@@ -38,8 +38,14 @@ class Recorder(object):
 		self.p = pyaudio.PyAudio()
 		self.stream = self.p.open(format=pyaudio.paFloat32,channels=self.channels,rate=self.rate,input=True,frames_per_buffer=self.frames_per_buffer,input_device_index=self.input_device_index)
 
+		#Get the name of the device
+		try:
+			device_name = self.p.get_device_info_by_index(self.input_device_index)["name"]
+		except:
+			device_name = self.p.get_default_input_device_info()["name"] 
+
 		#Log beginning of recordings to user
-		print("[+] Started recording, channels={0}, rate={1}, frames per buffer={2}".format(self.channels,self.rate,self.frames_per_buffer))
+		print("[+] Started recording on {0}, channels={1}, rate={2}, frames per buffer={3}".format(device_name,self.channels,self.rate,self.frames_per_buffer))
 
 
 	def record(self,seconds=5,visualize=False):
@@ -73,11 +79,17 @@ class Recorder(object):
 		"""
 		Play the recorded (or externally fed) sound
 		"""
-		
-		print("[+] Play")
-		
+
 		self.p = pyaudio.PyAudio()
 		self.stream = self.p.open(format=pyaudio.paFloat32,channels=self.channels,rate=self.rate,output=True,output_device_index=self.output_device_index)
+
+		#Get the name of the device
+		try:
+			device_name = self.p.get_device_info_by_index(self.output_device_index)["name"]
+		except:
+			device_name = self.p.get_default_output_device_info()["name"] 
+		
+		print("[+] Play on {0}".format(device_name))
 
 		if y is not None:
 			to_play = y
@@ -154,6 +166,19 @@ class Recorder(object):
 		wf.close()
 
 		p.terminate()
+
+
+	def savefig(self,filename):
+
+		"""
+		Saves current waveform to external image
+
+		"""
+
+		if not hasattr(self,"fig"):
+			self.visualize()
+
+		self.fig.savefig(filename)
 
 
 
