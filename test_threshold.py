@@ -22,6 +22,6 @@ t,y = recorder.record_above_threshold(seconds=5,threshold=threshold,save_wavefor
 
 #Visualize waveform and events above threshold
 recorder.visualize()
-recorder.ax.scatter(t,y,color="red",marker=".")
+recorder.ax.scatter(t,y,color="red")
 recorder.ax.set_title("{0} events above the threshold {1:.2e}".format(len(t),threshold))
 recorder.savefig("above_threshold.png")
