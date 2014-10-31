@@ -32,6 +32,19 @@ class Recorder(object):
 		self.input_device_index = input_device_index
 		self.output_device_index = output_device_index
 
+	@classmethod
+	def list_devices(cls):
+
+		p = pyaudio.PyAudio()
+
+		devices = list()
+		for n in range(p.get_device_count()):
+			devices.append(p.get_device_info_by_index(n)["name"])
+		
+		p.terminate()
+
+		return devices
+
 	def start(self):
 
 		#Open the sound card and instantiate the stream object
