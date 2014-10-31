@@ -1,4 +1,5 @@
 from counter import Recorder
+import numpy as np
 
 #log devices to user
 print("Available audio devices:\n")
@@ -32,3 +33,7 @@ recorder.visualize()
 recorder.ax.scatter(t,y,color="red")
 recorder.ax.set_title("{0} events above the threshold {1:.2e}".format(len(t),threshold))
 recorder.savefig("above_threshold.png")
+
+#Save the relevant events on txt file
+print("[+] Saving counts to counts.txt")
+np.savetxt("counts.txt",np.array([t,y]).transpose())
