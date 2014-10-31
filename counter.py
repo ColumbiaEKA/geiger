@@ -87,6 +87,57 @@ class Recorder(object):
 		return self.time,self.signal
 
 
+	def record_above_threshold(self,seconds=10,threshold=0.5,save_waveform=False):
+
+		"""
+		Perform triggering in real time keeping only the events above threshold
+
+		"""
+
+		time_global = list()
+		above_global = list()
+		num_frames = int(self.rate*seconds / self.frames_per_buffer) 
+
+		if save_waveform:
+			all_frames = list()
+
+		#Start recording
+		self.start()
+
+		for n in range(0,num_frames):
+			
+			#Read in the signal
+			frame = np.fromstring(self.stream.read(self.frames_per_buffer),dtype=np.float32)
+
+			if save_waveform:
+				all_frames.append(frame)
+			
+			#Get the corresponding time
+			time = np.linspace(n*seconds/num_frames,(n+1)*seconds/num_frames,len(frame))
+			
+			#Perform the selection
+			above_current = np.where(frame>threshold)[0]
+			time_global.append(time[above_current])
+			above_global.append(frame[above_current])
+
+
+		#Stop recording
+		self.stop()
+
+		if save_waveform:
+			self.signal = np.concatenate(all_frames)
+			self.time = np.linspace(0,seconds,self.signal.shape[0])
+
+		#Log progress to user
+		time_global = np.concatenate(time_global)
+		above_global = np.concatenate(above_global)
+		
+		print("[+] Found {0} events above the threshold={1:.2e}".format(len(above_global),threshold))
+
+		#Return
+		return time_global,above_global
+
+
 	def play(self,y=None):
 
 		"""
