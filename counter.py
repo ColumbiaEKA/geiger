@@ -160,6 +160,18 @@ class Recorder(object):
 		self.p.terminate()
 
 
+	@classmethod
+	def load(cls,filename,**kwargs):
+
+		t,y = np.load(filename)
+		recorder = cls(**kwargs)
+
+		setattr(recorder,"time",t)
+		setattr(recorder,"signal",y)
+
+		return recorder
+
+
 	def save(self,filename):
 
 		"""
