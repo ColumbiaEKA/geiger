@@ -17,6 +17,13 @@ except ValueError:
 #Set the threshold
 threshold = float(raw_input("select a threshold --> "))
 
+#Set the slope
+slope = raw_input("select the slope (raising,descending) --> ")
+if slope not in ["raising","descending"]:
+	slope = "raising"
+
+print("[+] Proceeding with {0} slope".format(slope))
+
 recorder = Recorder(input_device_index=input_device_index)
 t,y = recorder.record_above_threshold(seconds=5,threshold=threshold,save_waveform=True)
 
