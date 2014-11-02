@@ -33,7 +33,7 @@ def main():
 	#Ask user for length of recording
 	try:
 		recording_time = int(raw_input("\nEnter the recording time in seconds ({0}s) --> ".format(recording_time)))
-	except:
+	except ValueError:
 		pass
 
 	print("[+] Recording time set to {0}s".format(recording_time))
@@ -46,7 +46,7 @@ def main():
 
 	try:
 		input_device_index = int(raw_input("-->"))
-	except:
+	except ValueError:
 		input_device_index = 0
 
 	print("[+] Selected device {0}: {1}\n".format(input_device_index,devices[input_device_index]))
@@ -57,7 +57,7 @@ def main():
 	#Select the threshold and the slope type
 	try:
 		threshold = float(raw_input("[*] Select a threshold: "))
-	except:
+	except ValueError:
 		threshold = 0.0
 
 	print("[+] Threshold set to {0:.2e}\n".format(threshold))
