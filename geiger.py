@@ -90,8 +90,18 @@ def main():
 	np.savetxt(events_file,t)
 
 	if save_full_waveform:
+		
 		print("[+] Saving full waveform (t,y) to {0}".format(waveform_file))
 		np.save(waveform_file,np.array([recorder.time,recorder.signal]))
+		answer = raw_input("[*] Do you want to plot the waveform? (y/n)")
+		
+		if answer in ["y","yes"]:
+			
+			recorder.visualize()
+			recorder.ax.scatter(t,y,color="red")
+			figure_file = waveform_file.split(".")[0]+".png"
+			print("[+] Plotting waveform to {0}".format(figure_file))
+			recorder.savefig(figure_file)
 
 
 	#Quit
