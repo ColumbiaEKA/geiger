@@ -94,7 +94,7 @@ class Recorder(object):
 
 		"""
 
-		assert slope in ["raising","descending"]
+		assert slope in ["raising","descending"], "slope must be either raising or descending!"
 
 		time_global = list()
 		above_global = list()

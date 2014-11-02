@@ -1,0 +1,11 @@
+[counter]
+
+num_channels = 1
+rate = 44100
+frames_per_buffer = 1024
+recording_time = 5
+
+[output]
+
+events_file = events.txt
+save_full_waveform = True
