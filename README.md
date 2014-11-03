@@ -13,3 +13,8 @@ To perform a digital recording from the geiger counter, just run the script from
 Additionally you can specify a custom configuration file which has some tunable options
 
 	./geiger.py -f config
+
+Interactive demo
+----------------
+
+[click here](http://nbviewer.ipython.org/github/apetri/Notebooks/blob/master/geiger_counter.ipynb)
