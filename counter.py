@@ -58,7 +58,7 @@ class Recorder(object):
 			device_name = self.p.get_default_input_device_info()["name"] 
 
 		#Log beginning of recordings to user
-		print("[+] Started recording on {0}, channels={1}, rate={2}, frames per buffer={3}".format(device_name,self.channels,self.rate,self.frames_per_buffer))
+		print('\033[32m'+"[+] Started recording on {0}, channels={1}, rate={2}, frames per buffer={3}".format(device_name,self.channels,self.rate,self.frames_per_buffer)+'\033[39m')
 
 
 	def record(self,seconds=5,visualize=False):
@@ -139,7 +139,7 @@ class Recorder(object):
 		time_global = np.concatenate(time_global)
 		above_global = np.concatenate(above_global)
 		
-		print("[+] Found {0} events on {1} threshold={2:.2e}".format(len(above_global),slope,threshold))
+		print('\033[32m'+"[+] Found {0} events on {1} threshold={2:.2e}".format(len(above_global),slope,threshold)+'\033[39m')
 
 		#Return
 		return time_global,above_global
@@ -160,7 +160,7 @@ class Recorder(object):
 		except:
 			device_name = self.p.get_default_output_device_info()["name"] 
 		
-		print("[+] Play on {0}".format(device_name))
+		print('\033[32m'+"[+] Play on {0}".format(device_name)+'\033[39m')
 
 		if y is not None:
 			to_play = y
@@ -173,7 +173,7 @@ class Recorder(object):
 		self.stream.close()
 		self.p.terminate()
 
-		print("[-] Stop")
+		print('\033[31m'+"[-] Stop"+'\033[39m')
 
 
 	def visualize(self,fig=None,ax=None):
@@ -187,18 +187,16 @@ class Recorder(object):
 			raise ImportError("matplotlib is not installed, can't plot")
 
 		#Instantiate figure
-		if hasattr(self,"fig") and hasattr(self,"ax"):
+		if (fig is not None) and (ax is not None):
+			self.fig = fig
+			self.ax = ax
+		elif hasattr(self,"fig") and hasattr(self,"ax"):
 			pass
 		else:
-			
-			if fig is None or ax is None:
-				self.fig,self.ax = plt.subplots()
-			else:
-				self.fig = fig
-				self.ax = ax
+			self.fig,self.ax = plt.subplots()
 
 		#Plot the waveform
-		if hasattr(self,"waveform"):
+		if hasattr(self,"waveform") and (ax is None) and (ax is None):
 			self.waveform[0].set_xdata(self.time)
 			self.waveform[0].set_ydata(self.signal)
 			self.ax.set_xlim(self.time.min(),self.time.max())
@@ -212,7 +210,7 @@ class Recorder(object):
 	def stop(self):
 
 		#Stop recording and release the sound card
-		print("[-] Stopped recording")
+		print('\033[31m'+"[-] Stopped recording"+'\033[39m')
 		self.stream.stop_stream()
 		self.stream.close()
 		self.p.terminate()
@@ -240,7 +238,7 @@ class Recorder(object):
 		#Parse the desired format from the filename
 		extension = filename.split(".")[-1]
 
-		print("[+] Saving waveform to {0}".format(filename))
+		print('\033[32m'+"[+] Saving waveform to {0}".format(filename)+'\033[39m')
 
 		if extension=="npy":
 		
