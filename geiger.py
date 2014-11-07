@@ -78,6 +78,7 @@ def main():
 
 
 	#Start the recording
+	go = raw_input('\033[33m'+"\n[*] Press <enter> to start recording:"+'\033[39m')
 	t,y = recorder.record_above_threshold(seconds=recording_time,threshold=threshold,slope=slope,save_waveform=save_full_waveform)
 
 	#Save positive events to txt file
